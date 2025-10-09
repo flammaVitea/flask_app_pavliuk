@@ -26,3 +26,18 @@ WARNING: This is a development server. Do not use it in a production deployment.
 Press CTRL+C to quit
 ```
 
+```bash
+(.venv) bogdanpavliuk@Mac-mini-Bogdan flask_app_pavliuk % flask run 
+ * Serving Flask app 'app.py'
+ * Debug mode: on
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on http://127.0.0.1:8080
+Press CTRL+C to quit
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 541-618-492
+ ```
+
+```bash
+(.venv) bogdanpavliuk@Mac-mini-Bogdan flask_app_pavliuk % pip freeze > requirements.txt
+```
