@@ -1,0 +1,56 @@
+body {
+    font-family: "Segoe UI", sans-serif;
+    background-color: #f8f9fa;
+}
+
+/* Make the page use a column flex layout so footer can be pushed to the bottom
+   - body is a column flex container with min-height 100vh
+   - main.container grows to fill available space
+   - footer uses margin-top: auto to stay at the bottom when content is short */
+html, body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main.container {
+    flex: 1 0 auto; /* allow main area to grow and push footer down */
+}
+
+footer {
+    margin-top: auto; /* ensure footer is pushed to bottom if content is short */
+}
+
+h2 {
+    border-bottom: 2px solid #0d6efd;
+    padding-bottom: 5px;
+}
+
+img {
+    border-radius: 10px;
+}
+
+ul {
+    list-style-type: square;
+    padding-left: 20px;
+}
+
+section {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+}
+
+@media (max-width: 768px) {
+    section {
+        padding: 15px;
+    }
+    img {
+        width: 120px;
+    }
+}
