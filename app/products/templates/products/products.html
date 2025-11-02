@@ -1,10 +1,21 @@
-<!DOCTYPE html>
-<html lang="uk">
-<head>
-    <meta charset="UTF-8">
-    <title>Products</title>
-</head>
-<body>
-    <h1>Сторінка продуктів</h1>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}Product Page{% endblock %}
+
+{% block content %}
+<nav>
+    <ul>
+        <li><a href="{{ url_for('users.hi', name='Bogdan', age=21) }}">Greet Bogdan</a></li>
+        <li><a href="{{ url_for('users.admin') }}">Admin</a></li>
+    </ul>
+</nav>
+
+<h2>Сторінка продуктів</h2>
+
+{% if price %}
+    <p>Назва продукту: <strong>{{ name | capitalize }}</strong></p>
+    <p>Ціна: <strong>{{ price }} грн</strong></p>
+{% else %}
+    <p>Продукт <strong>{{ name }}</strong> не знайдено.</p>
+{% endif %}
+{% endblock %}
