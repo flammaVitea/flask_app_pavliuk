@@ -1,19 +1,15 @@
 {% extends "base.html" %}
+{% from "macros.html" import render_field %}
+
 {% block title %}Вхід{% endblock %}
+
 {% block content %}
 <h2>Вхід</h2>
-<form method="post">
- <div class="mb-3">
-   <label>Username</label>
-   <input type="text" name="username" class="form-control" required>
- </div>
- <div class="mb-3">
-   <label>Пароль</label>
-   <input type="password" name="password" class="form-control" required>
- </div>
- <button type="submit" class="btn btn-primary">Увійти</button>
+<form method="post" novalidate>
+    {{ form.csrf_token }}
+    {{ render_field(form.username) }}
+    {{ render_field(form.password) }}
+    {{ render_field(form.remember) }}
+    <button type="submit" class="btn btn-primary">Увійти</button>
 </form>
 {% endblock %}
-
-
-
