@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Профіль{% endblock %}
+{% block content %}
+<div class="{{ 'bg-dark text-white' if color == 'dark' else 'bg-light text-dark' }} p-4 rounded">
+ <h2>Вітаю, {{ username }}!</h2>
+
+
+ <a href="{{ url_for('users.set_color', scheme='light') }}" class="btn btn-secondary btn-sm">Світла тема</a>
+ <a href="{{ url_for('users.set_color', scheme='dark') }}" class="btn btn-dark btn-sm">Темна тема</a>
+
+
+ <hr>
+ <h4>Кукі</h4>
+ <form method="post" action="{{ url_for('users.add_cookie') }}">
+   <input type="text" name="key" placeholder="Ключ">
+   <input type="text" name="value" placeholder="Значення">
+   <button type="submit" class="btn btn-success btn-sm">Додати</button>
+ </form>
+
+
+ <form method="post" action="{{ url_for('users.delete_cookie') }}" class="mt-2">
+   <input type="text" name="key" placeholder="Ключ (порожнє = усі)">
+   <button type="submit" class="btn btn-danger btn-sm">Видалити</button>
+ </form>
+
+
+ <table class="table mt-3">
+   <thead><tr><th>Ключ</th><th>Значення</th></tr></thead>
+   <tbody>
+     {% for k, v in cookies.items() %}
+     <tr><td>{{ k }}</td><td>{{ v }}</td></tr>
+     {% endfor %}
+   </tbody>
+ </table>
+</div>
+{% endblock %}
+
+
