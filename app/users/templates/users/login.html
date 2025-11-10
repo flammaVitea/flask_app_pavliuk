@@ -9,7 +9,10 @@
     {{ form.csrf_token }}
     {{ render_field(form.username) }}
     {{ render_field(form.password) }}
-    {{ render_field(form.remember) }}
-    <button type="submit" class="btn btn-primary">Увійти</button>
+<div class="form-check">
+    {{ form.remember(class="form-check-input") }}
+    {{ form.remember.label(class="form-check-label") }}
+</div>
+    {{ render_field(form.submit) }}
 </form>
 {% endblock %}

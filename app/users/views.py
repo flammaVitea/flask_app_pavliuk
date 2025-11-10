@@ -22,6 +22,13 @@ def admin():
 @users_bp.route("/login", methods=["GET", "POST"])
 def login():
     form = LoginForm()
+
+    # Якщо користувача пам'ятають через cookie
+    if request.cookies.get("remember") == "1":
+        session["username"] = VALID_USERNAME
+        flash("Вас запам’ятали, вхід виконано автоматично!", "info")
+        return redirect(url_for("users.profile"))
+
     if form.validate_on_submit():
         username = form.username.data
         password = form.password.data
@@ -29,15 +36,17 @@ def login():
 
         if username == VALID_USERNAME and password == VALID_PASSWORD:
             session["username"] = username
-            flash_msg = f"Вхід успішний! Користувач: {username}."
+            flash("Вхід успішний!", "success")
+
+            resp = make_response(redirect(url_for("users.profile")))
+            # Якщо активовано чекбокс "Запам’ятати мене"
             if remember:
-                flash_msg += " Опція 'Запам’ятати мене' активована."
-            flash(flash_msg, "success")
-            return redirect(url_for("users.profile"))
+                resp.set_cookie("remember", "1", max_age=60*60*24*7)  # 7 днів
+                flash("Опція 'Запам’ятати мене' активована.", "info")
+            return resp
         else:
             flash("Невірні дані входу!", "danger")
-            return redirect(url_for("users.login"))
-    
+
     return render_template("login.html", form=form)
 
 
@@ -57,7 +66,11 @@ def profile():
 def logout():
     session.pop("username", None)
     flash("Ви вийшли із системи!", "info")
-    return redirect(url_for("users.login"))
+
+    resp = make_response(redirect(url_for("users.login")))
+    resp.delete_cookie("remember")
+    return resp
+
 
 
 @users_bp.route("/add_cookie", methods=["POST"])
