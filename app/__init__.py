@@ -1,6 +1,7 @@
 from flask import Flask
 from app.users import users_bp
 from app.products import products_bp
+from app.views import main_bp
 
 app = Flask(__name__)
 app.config.from_pyfile('../config.py')
@@ -12,3 +13,4 @@ app.secret_key = "supersecretkey123"
 
 app.register_blueprint(users_bp)
 app.register_blueprint(products_bp)
+app.register_blueprint(main_bp)
