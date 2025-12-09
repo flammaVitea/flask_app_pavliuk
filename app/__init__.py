@@ -17,9 +17,9 @@ migrate = Migrate()
 
 def create_app(config_name: str | None = None):
     if config_name is None:
-        config_name = os.environ.get('FLASK_CONFIG', 'development')
+        config_name = os.environ.get('FLASK_CONFIG', 'dev')
 
-    config_class = config_map.get(config_name, config_map['development'])
+    config_class = config_map.get(config_name, config_map['dev'])
 
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_object(config_class)
@@ -46,4 +46,4 @@ def create_app(config_name: str | None = None):
 
     return app
 
-app = create_app(os.environ.get('FLASK_CONFIG', 'development'))
+app = create_app(os.environ.get('FLASK_CONFIG', 'dev'))
