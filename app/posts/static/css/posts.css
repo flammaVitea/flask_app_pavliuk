@@ -1,0 +1,18 @@
+.card {
+    transition: transform 0.2s;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.card:hover {
+    transform: scale(1.02);
+}
+
+.card-img-top {
+    object-fit: cover;
+    height: 200px; /* Фіксована висота для картинок */
+}
+
+.post-date {
+    font-size: 0.8rem;
+    color: #6c757d;
+}

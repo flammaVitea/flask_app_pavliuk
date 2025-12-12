@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Видалення посту{% endblock %}
+
+{% block content %}
+<div class="alert alert-danger">
+    <h3>Видалення посту</h3>
+    <p>Ви впевнені, що хочете видалити пост <strong>"{{ post.title }}"</strong>? Цю дію неможливо скасувати.</p>
+</div>
+
+<form method="POST">
+    <input type="submit" class="btn btn-danger" value="Так, видалити">
+    <a href="{{ url_for('posts.detail', id=post.id) }}" class="btn btn-secondary">Скасувати</a>
+</form>
+{% endblock %}
