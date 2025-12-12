@@ -40,11 +40,11 @@ def create_app(config_name=None):
     app.register_blueprint(users_bp)
     app.register_blueprint(products_bp)
     app.register_blueprint(main_bp)
-    app.register_blueprint(post_bp)
-
+    app.register_blueprint(post_bp, url_prefix='/post')
+    
     # Обробник помилок
     @app.errorhandler(404)
     def not_found(e):
         return render_template('404.html'), 404
-
+    
     return app

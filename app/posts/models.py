@@ -8,13 +8,15 @@ class Post(db.Model):
     title = db.Column(db.String(150), nullable=False)
     content = db.Column(db.Text, nullable=False)
     posted = db.Column(db.DateTime, default=datetime.utcnow)
-    
-    # Enum для категорії. name='post_category' важливий для деяких БД (Postgres)
     category = db.Column(
         db.Enum('news', 'publication', 'tech', 'other', name='post_category'),
         nullable=False,
         default='other'
     )
+    
+    # --- НОВІ ПОЛЯ ---
+    is_active = db.Column(db.Boolean, default=True)
+    author = db.Column(db.String(20), default='Anonymous')
 
     def __repr__(self):
         return f"<Post id={self.id}, title='{self.title}', category='{self.category}'>"

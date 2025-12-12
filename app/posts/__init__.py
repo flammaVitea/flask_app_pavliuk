@@ -7,4 +7,4 @@ post_bp = Blueprint(
     static_folder='static/',
     static_url_path='/posts/static/'
 )
-from . import views
+from . import views, models

@@ -12,7 +12,7 @@ class Config:  # Перейменовано з BaseConfig згідно завд�
 class DevelopmentConfig(Config):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL") or \
-        "sqlite:///" + os.path.join(basedir, "site.db") # Запасний варіант
+        "sqlite:///" + os.path.join(basedir, "data.sqlite") # Запасний варіант
 
 class TestingConfig(Config):
     TESTING = True
