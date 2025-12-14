@@ -7,8 +7,6 @@ class PostForm(FlaskForm):
     title = StringField('Заголовок', validators=[DataRequired(), Length(min=2, max=150)])
     content = TextAreaField('Текст посту', validators=[DataRequired()])
     is_active = BooleanField('Активний пост', default=True)
-    
-    # Поле вибору дати. Default = зараз.
     publish_date = DateTimeLocalField('Дата публікації', format='%Y-%m-%dT%H:%M', default=datetime.utcnow)
     
     category = SelectField('Категорія', choices=[
@@ -17,5 +15,8 @@ class PostForm(FlaskForm):
         ('tech', 'Технології'),
         ('other', 'Інше')
     ], validators=[DataRequired()])
+    
+    # Додаємо поле вибору автора. coerce=int обов'язково, бо value буде ID (число)
+    author_id = SelectField('Автор', coerce=int, validators=[DataRequired()])
     
     submit = SubmitField('Зберегти')

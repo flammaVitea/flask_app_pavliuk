@@ -3,6 +3,7 @@ from . import post_bp
 from app import db
 from app.posts.models import Post
 from app.posts.forms import PostForm
+from app.users.models import User
 
 @post_bp.route('/', methods=['GET'])
 def index():
@@ -24,13 +25,17 @@ def detail(id):
 def create():
     """ створення поста """
     form = PostForm()
+    
+    form.author_id.choices = [(user.id, user.username) for user in db.session.query(User).all()]
+
     if form.validate_on_submit():
         post = Post(
             title=form.title.data,
             content=form.content.data,
             is_active=form.is_active.data,
             posted=form.publish_date.data,
-            category=form.category.data
+            category=form.category.data,
+            user_id=form.author_id.data  
         )
         db.session.add(post)
         db.session.commit()
@@ -45,8 +50,11 @@ def update(id):
     post = db.get_or_404(Post, id)
     form = PostForm(obj=post)
 
+    form.author_id.choices = [(user.id, user.username) for user in db.session.query(User).all()]
+
     if request.method == 'GET':
         form.publish_date.data = post.posted
+        form.author_id.data = post.user_id
 
     if form.validate_on_submit():
         post.title = form.title.data
@@ -54,6 +62,8 @@ def update(id):
         post.is_active = form.is_active.data
         post.posted = form.publish_date.data
         post.category = form.category.data
+        
+        post.user_id = form.author_id.data
         
         db.session.commit()
         flash('Пост оновлено!', 'success')
