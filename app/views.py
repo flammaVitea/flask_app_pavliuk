@@ -16,6 +16,10 @@ def main():
 def resume():
     return render_template("resume.html")
 
+@main_bp.route("/base")
+def base():
+    return render_template("base.html")
+
 @main_bp.route("/contact", methods=["GET", "POST"])
 def contact():
     form = ContactForm()
