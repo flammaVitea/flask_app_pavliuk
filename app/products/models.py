@@ -1,7 +1,8 @@
-from sqlalchemy import Integer, String, Float, ForeignKey, Boolean
+from sqlalchemy import Integer, String, Float, ForeignKey, Boolean, DateTime
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy.sql import expression
+from sqlalchemy.sql import expression, func
 from typing import List, Optional
+from datetime import datetime
 from app import db
 
 class Category(db.Model):
@@ -26,8 +27,14 @@ class Product(db.Model):
     name: Mapped[str] = mapped_column(String(100), nullable=False)
     price: Mapped[float] = mapped_column(Float, nullable=False)
     
-    # ОСЬ ЦЕ ПОЛЕ, ЯКЕ МИ ДОДАЄМО:
     active: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True, server_default=expression.true())
+
+    # ОНОВЛЕНЕ ПОЛЕ (Частина 6, спроба 2)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        nullable=False,
+        server_default=func.now()
+    )
 
     category_id: Mapped[Optional[int]] = mapped_column(ForeignKey('categories.id'), nullable=True)
     category: Mapped[Optional["Category"]] = relationship("Category", back_populates="products")
