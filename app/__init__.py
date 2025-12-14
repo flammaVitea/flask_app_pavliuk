@@ -2,36 +2,41 @@ import os
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from sqlalchemy import MetaData
+from sqlalchemy.orm import DeclarativeBase  # <--- Додано імпорт
 from .config import config_map
 
-# 1. Ініціалізація розширень глобально (щоб їх могли імпортувати моделі)
-db = SQLAlchemy()
+# 1. Створюємо клас Base з налаштуванням іменування (Naming Convention)
+class Base(DeclarativeBase):
+    metadata = MetaData(naming_convention={
+        "ix": 'ix_%(column_0_label)s',
+        "uq": "uq_%(table_name)s_%(column_0_name)s",
+        "ck": "ck_%(table_name)s_%(constraint_name)s",
+        "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
+        "pk": "pk_%(table_name)s"
+    })
+
+# 2. Ініціалізуємо SQLAlchemy з використанням нашого класу Base
+db = SQLAlchemy(model_class=Base)
 migrate = Migrate()
 
 def create_app(config_name=None):
-    # Визначення конфігурації
     if config_name is None:
         config_name = os.environ.get('FLASK_CONFIG', 'dev')
 
     app = Flask(__name__, instance_relative_config=True)
     
-    # Завантаження налаштувань
     config_class = config_map.get(config_name, config_map['dev'])
     app.config.from_object(config_class)
 
-    # Створення папки instance, якщо немає
     try:
         os.makedirs(app.instance_path, exist_ok=True)
     except OSError:
         pass
 
-    # 2. Ініціалізація розширень з додатком
     db.init_app(app)
     migrate.init_app(app, db)
 
-    # 3. Імпорт та реєстрація блюпринтів
-    # Імпортуємо ТУТ, щоб уникнути циклічних імпортів (Circular Import),
-    # оскільки модулі блюпринтів можуть імпортувати 'db' з цього файлу.
     from app.users import users_bp
     from app.products import products_bp
     from app.views import main_bp
@@ -42,7 +47,6 @@ def create_app(config_name=None):
     app.register_blueprint(main_bp)
     app.register_blueprint(post_bp, url_prefix='/post')
     
-    # Обробник помилок
     @app.errorhandler(404)
     def not_found(e):
         return render_template('404.html'), 404
