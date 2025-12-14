@@ -6,4 +6,4 @@ products_bp = Blueprint(
     template_folder='templates/products'
 )
 
-from . import views
+from . import views, models
